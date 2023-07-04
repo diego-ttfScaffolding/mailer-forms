@@ -15,6 +15,39 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/newDestinatary', async (req, res) => {
   const { email, formTitle } = req.body;
 
+  const docsUrl = [
+    'https://ttfscaffolding.com/wp-content/uploads/2023/07/TTF-Credit-Application-2023-1.pdf',
+    'https://ttfscaffolding.com/wp-content/uploads/2023/07/TTF-Credit-Request-2023-1-1.pdf',
+    'https://ttfscaffolding.com/wp-content/uploads/2023/07/TTF-Credit-Card-Authorization.pdf'
+  ]
+  const onlineURL = [
+    'https://ttfconstruction.com/creditForms/#/form-applicationsForCredit',
+    'https://ttfconstruction.com/creditForms/#/form-creditRequest',
+    'https://ttfconstruction.com/creditForms/#/form-creditCardAuthorization'
+  ]
+
+  let formFileURL, formOnlineURL;
+
+  switch (formTitle) {
+    case 'creditApplication':
+      formFileURL = docsUrl[0]
+      formOnlineURL = onlineURL[0]
+      break;
+    case 'creditRequest':
+      formFileURL = docsUrl[1]
+      formOnlineURL = onlineURL[1]
+      break;
+    case 'creditCardAuthorization':
+      formFileURL = docsUrl[2]
+      formOnlineURL = onlineURL[2]
+      break;
+  
+    default:
+      formFileURL = ''
+      formOnlineURL = ''
+      break;
+  }
+
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -41,7 +74,9 @@ app.post('/newDestinatary', async (req, res) => {
       subject: formTitle, 
       template: 'email',
       context: {
-        formTitle
+        formTitle,
+        formFileURL, 
+        formOnlineURL
       }
     };
 
