@@ -15,6 +15,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/newDestinatary', async (req, res) => {
   const { email, formTitle } = req.body;
 
+  const titles = [
+    'Credit Application', 
+    'Credit Request', 
+    'Credit Card Authorization'
+  ]
+
   const docsUrl = [
     'https://ttfscaffolding.com/wp-content/uploads/2023/07/TTF-Credit-Application-2023-1.pdf',
     'https://ttfscaffolding.com/wp-content/uploads/2023/07/TTF-Credit-Request-2023-1-1.pdf',
@@ -26,20 +32,23 @@ app.post('/newDestinatary', async (req, res) => {
     'https://ttfconstruction.com/creditForms/#/form-creditCardAuthorization'
   ]
 
-  let formFileURL, formOnlineURL;
+  let formFileURL, formOnlineURL, emailTitle;
 
   switch (formTitle) {
     case 'creditApplication':
       formFileURL = docsUrl[0]
       formOnlineURL = onlineURL[0]
+      emailTitle = titles[0]
       break;
     case 'creditRequest':
       formFileURL = docsUrl[1]
       formOnlineURL = onlineURL[1]
+      emailTitle = titles[1]
       break;
     case 'creditCardAuthorization':
       formFileURL = docsUrl[2]
       formOnlineURL = onlineURL[2]
+      emailTitle = titles[2]
       break;
   
     default:
@@ -71,10 +80,10 @@ app.post('/newDestinatary', async (req, res) => {
     const mailOptions = {
       from: 'TTF SCAFFOLDING',
       to: email,
-      subject: formTitle, 
+      subject: emailTitle, 
       template: 'email',
       context: {
-        formTitle,
+        emailTitle,
         formFileURL, 
         formOnlineURL
       }
